@@ -10,6 +10,20 @@ Next.js (TypeScript) déployé sur Vercel, Supabase pour la base, le temps réel
 
 > État : le harnais de travail est posé ; l'application (Next.js) n'est pas encore installée.
 
+## Direction artistique
+
+Un grimoire de cuir posé sur une table de taverne, à la lueur d'une bougie. On ouvre le livre, et chaque menu est une double page jaunie ; on navigue avec les marque-pages. En partie, le livre devient un carnet (dés, fiche, convives) et la carte se déroule sur la table, avec le brouillard de guerre et la torche du personnage. Le mode sombre est un codex nocturne.
+
+| Le grimoire fermé | Le sommaire |
+|---|---|
+| ![Livre de cuir fermé, titre doré « Grimoire des Tables », sur une table en bois](docs/design/captures/1-couverture.jpg) | ![Double page jaunie : texte d'accueil et table des matières, marque-pages colorés à droite](docs/design/captures/2-sommaire.jpg) |
+
+| En partie, à la bougie | En partie, mode nuit |
+|---|---|
+| ![Carnet de dés à gauche, carte de la crypte à droite : brouillard noir, zones déjà vues grisées, torche autour du pion d'Arya](docs/design/captures/3-partie.jpg) | ![Le même écran en mode sombre : cuir noir, encre pâle, halo de torche](docs/design/captures/4-partie-nuit.jpg) |
+
+La maquette cliquable est dans [`docs/design/maquette-grimoire.html`](docs/design/maquette-grimoire.html) : ouvrez-la dans un navigateur. Le design system de l'application en sera tiré.
+
 ## Installer le projet
 
 Prérequis : Node.js, [pnpm](https://pnpm.io) et [Claude Code](https://code.claude.com).
@@ -44,6 +58,7 @@ claude mcp add --scope user --transport http context7 https://mcp.context7.com/m
 | `src/` | le code, en trois couches : présentation (`app`, `components`), service (`services`), données (`data`), plus l'assemblage (`composition`) |
 | `_test_/` | tous les tests : `integration/` et `unitaires/<couche>/` |
 | `docs/decisions/` | les décisions d'architecture (ADR) |
+| `docs/design/` | la maquette du grimoire et ses captures |
 | `lots.md` | le découpage du travail en lots, avec leurs critères d'acceptation |
 | `CLAUDE.md`, `.claude/` | le harnais d'équipe : consignes, règles par couche, skills, agents, hooks et permissions |
 | `.mcp.json` | les outils MCP partagés (Supabase, Playwright) |

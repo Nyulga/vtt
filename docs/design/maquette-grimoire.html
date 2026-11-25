@@ -1,0 +1,925 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grimoire VTT</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=UnifrakturMaguntia&display=swap">
+<style>
+/* Concept : un grimoire de cuir posé sur une table de taverne, à la bougie. Les menus sont des doubles pages ;
+   en partie, le livre devient un carnet et la carte se déroule sur la table. Mode nuit : le codex nocturne. */
+:root {
+  --table: #4a3322; --table-veine: #3a281a; --sur-table: #ecdcb4;
+  --cuir: #5b2a1d; --cuir-sombre: #3e1c13; --or: #b8913f;
+  --page: #e8d9b0; --page-bord: #c9b27a; --papier-lettre: #f1e6c8;
+  --encre: #2a1c10; --encre-pale: #6b5638; --rubrique: #9b2c1c; --succes: #3d6b35;
+  --lueur: rgba(255, 186, 104, .34);
+  --brouillard: #1b140e; --carte-sol: #e3d3a6; --carte-mur: #3b2c1c;
+  --ruban-1: #9b2c1c; --ruban-2: #8a6a1f; --ruban-3: #3f5e3a; --ruban-4: #34506b; --ruban-5: #5b3a5e; --sur-ruban: #f3e8cc;
+  --pion-1: #9b2c1c; --pion-2: #8a6a1f; --pion-3: #2f5a6b; --pion-monstre: #2c2a22;
+  --grain-opacite: .5; --grain-mode: multiply;
+  --f-gothique: "UnifrakturMaguntia", "Old English Text MT", "Times New Roman", serif;
+  --f-titre: "IM Fell English SC", "Cormorant SC", Georgia, serif;
+  --f-plume: "IM Fell English", Georgia, serif;
+  --f-texte: "EB Garamond", Garamond, Georgia, serif;
+  --bruit: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .22 0 0 0 0 .08 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --fibres: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .35' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .45 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --table: #16110d; --table-veine: #0f0b08; --sur-table: #cdbb92;
+    --cuir: #1f1915; --cuir-sombre: #0e0b09; --or: #d6b25e;
+    --page: #2b251d; --page-bord: #4a3f2e; --papier-lettre: #38301f;
+    --encre: #eadbb5; --encre-pale: #a8977a; --rubrique: #e0755a; --succes: #9ccc84;
+    --lueur: rgba(150, 175, 255, .15);
+    --brouillard: #07060a; --carte-sol: #3a3226; --carte-mur: #100d0a;
+    --ruban-1: #8e3424; --ruban-2: #7a5e1c; --ruban-3: #3c5a37; --ruban-4: #2f4a66; --ruban-5: #573858; --sur-ruban: #f3e8cc;
+    --pion-1: #e0755a; --pion-2: #d6b25e; --pion-3: #7fb3c9; --pion-monstre: #9a9580;
+    --grain-opacite: .4; --grain-mode: soft-light;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --table: #16110d; --table-veine: #0f0b08; --sur-table: #cdbb92;
+  --cuir: #1f1915; --cuir-sombre: #0e0b09; --or: #d6b25e;
+  --page: #2b251d; --page-bord: #4a3f2e; --papier-lettre: #38301f;
+  --encre: #eadbb5; --encre-pale: #a8977a; --rubrique: #e0755a; --succes: #9ccc84;
+  --lueur: rgba(150, 175, 255, .15);
+  --brouillard: #07060a; --carte-sol: #3a3226; --carte-mur: #100d0a;
+  --ruban-1: #8e3424; --ruban-2: #7a5e1c; --ruban-3: #3c5a37; --ruban-4: #2f4a66; --ruban-5: #573858; --sur-ruban: #f3e8cc;
+  --pion-1: #e0755a; --pion-2: #d6b25e; --pion-3: #7fb3c9; --pion-monstre: #9a9580;
+  --grain-opacite: .4; --grain-mode: soft-light;
+  color-scheme: dark;
+}
+
+html, body { height: 100%; }
+[hidden] { display: none !important; }
+body { margin: 0; }
+body {
+  background-color: var(--table);
+  background-image: var(--fibres), repeating-linear-gradient(91deg, var(--table) 0 22px, var(--table-veine) 22px 23px, var(--table) 23px 61px);
+  color: var(--sur-table);
+  font-family: var(--f-texte);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 20;
+  background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,.42) 100%);
+}
+.bougie {
+  position: fixed; top: -30vmax; right: -25vmax; width: 80vmax; height: 80vmax; pointer-events: none; z-index: 0;
+  background: radial-gradient(circle, var(--lueur), transparent 62%);
+  animation: vaciller 3.2s ease-in-out infinite alternate;
+}
+@keyframes vaciller { 0% { opacity: .78; transform: scale(1); } 40% { opacity: 1; } 70% { opacity: .86; transform: scale(1.03); } 100% { opacity: .95; transform: scale(.99); } }
+
+.scene { position: relative; z-index: 1; min-height: 100%; display: flex; flex-direction: column; padding-block: 12px 32px; box-sizing: border-box; }
+.barre { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; max-width: 1200px; width: 100%; margin: 0 auto; }
+.barre p { margin: 0; font: italic .95rem var(--f-plume); opacity: .85; }
+.barre .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.bouton-bois {
+  font: 1rem var(--f-titre); color: var(--sur-table); background: transparent; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--or) 70%, transparent); border-radius: 3px; padding: .45em 1em;
+}
+.bouton-bois:hover { background: color-mix(in srgb, var(--or) 16%, transparent); }
+.bouton-bois[aria-pressed="true"] { background: color-mix(in srgb, var(--or) 28%, transparent); border-color: var(--or); }
+:focus-visible { outline: 2px solid var(--or); outline-offset: 3px; }
+.page :focus-visible, .carnet :focus-visible { outline-color: var(--rubrique); }
+
+.vue { flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; }
+
+/* ---------- Le livre fermé ---------- */
+#vue-couverture { display: grid; place-items: center; padding-block: 28px; }
+.livre-ferme { position: relative; width: min(390px, 100%); aspect-ratio: 3 / 4; perspective: 1800px; }
+.livre-ferme .dessous {
+  position: absolute; inset: 0 0 0 10px; border-radius: 3px 8px 8px 3px;
+  background: var(--bruit), var(--page);
+  box-shadow: 2px 2px 0 var(--page-bord), 4px 4px 0 var(--page), 6px 6px 0 var(--page-bord), 8px 8px 0 var(--page), 16px 22px 34px rgba(0,0,0,.55);
+  display: grid; place-items: center; color: transparent; font: 2rem var(--f-gothique); text-align: center; padding: 24px; transition: color .6s .4s;
+}
+.couverture {
+  position: absolute; inset: 0; transform-origin: left center; backface-visibility: hidden;
+  transition: transform 1.05s cubic-bezier(.62,.04,.3,1);
+  background: var(--bruit), radial-gradient(ellipse at 30% 25%, color-mix(in srgb, var(--cuir) 80%, #fff 8%), var(--cuir) 55%, var(--cuir-sombre));
+  border-radius: 6px 10px 10px 6px;
+  box-shadow: inset 0 0 0 12px var(--cuir-sombre), inset 0 0 0 13px var(--or), inset 0 0 0 19px transparent, inset 0 0 0 20px color-mix(in srgb, var(--or) 55%, transparent), inset 0 0 70px rgba(0,0,0,.55), 14px 18px 30px rgba(0,0,0,.55);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 48px 36px; text-align: center; box-sizing: border-box;
+}
+.couverture::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 24px; border-radius: 6px 0 0 6px;
+  background: repeating-linear-gradient(180deg, transparent 0 18%, rgba(0,0,0,.35) 18% 19.5%, rgba(255,220,160,.12) 19.5% 21%), linear-gradient(90deg, rgba(0,0,0,.5), rgba(0,0,0,.1));
+}
+.couverture .embleme { width: 92px; height: 92px; color: var(--or); filter: drop-shadow(0 1px 0 rgba(0,0,0,.6)); }
+.titre-couverture { margin: 0; font: 400 clamp(2.6rem, 10vw, 3.7rem)/1 var(--f-gothique); color: var(--or); text-shadow: 0 -1px 0 rgba(0,0,0,.65), 0 1px 0 rgba(255,228,170,.25); text-wrap: balance; }
+.sous-titre { margin: 0; font: 1.05rem var(--f-titre); color: color-mix(in srgb, var(--or) 80%, var(--page)); letter-spacing: .06em; }
+.ouvrir {
+  margin-top: 10px; font: 1.15rem var(--f-titre); color: var(--or); background: rgba(0,0,0,.18); cursor: pointer;
+  border: 1px solid var(--or); border-radius: 2px; padding: .7em 1.6em; letter-spacing: .04em;
+}
+.ouvrir:hover { background: color-mix(in srgb, var(--or) 18%, transparent); }
+.fermoir {
+  position: absolute; right: -14px; top: 44%; width: 58px; height: 46px; z-index: 2; border-radius: 4px 8px 8px 4px;
+  background: var(--bruit), var(--cuir-sombre); box-shadow: 3px 4px 8px rgba(0,0,0,.5); transition: opacity .3s;
+}
+.fermoir::after { content: ""; position: absolute; left: 12px; top: 11px; width: 22px; height: 22px; border-radius: 50%; border: 3px solid var(--or); box-sizing: border-box; }
+.livre-ferme.ouvre .couverture { transform: rotateY(-168deg); }
+.livre-ferme.ouvre .fermoir { opacity: 0; }
+.livre-ferme.ouvre .dessous { color: var(--rubrique); }
+
+/* ---------- Le livre ouvert ---------- */
+#vue-livre { display: grid; place-items: center; padding-block: 20px; }
+.livre {
+  position: relative; width: min(1080px, calc(100% - 64px)); margin-right: 64px; box-sizing: border-box;
+  display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); padding: 14px; border-radius: 10px;
+  background: var(--bruit), var(--cuir-sombre); box-shadow: 0 32px 60px rgba(0,0,0,.55);
+  perspective: 2600px; animation: poser .45s ease-out;
+}
+@keyframes poser { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
+.page {
+  position: relative; min-width: 0; min-height: 600px; box-sizing: border-box; padding: 44px 52px 70px;
+  background: var(--page); color: var(--encre); font: 1.1rem/1.62 var(--f-texte); overflow: hidden;
+}
+.page::before, .feuille::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--bruit); opacity: var(--grain-opacite); mix-blend-mode: var(--grain-mode); }
+.page::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, transparent 62%, rgba(110,70,25,.22) 100%); }
+.page > * { position: relative; z-index: 1; }
+.page-gauche { border-radius: 4px 0 0 4px; box-shadow: inset -34px 0 38px -22px rgba(50,28,8,.55); }
+.page-droite { border-radius: 0 4px 4px 0; box-shadow: inset 34px 0 38px -22px rgba(50,28,8,.55); }
+.tete { margin: 0 0 26px; text-align: center; font: .95rem var(--f-titre); color: var(--encre-pale); letter-spacing: .08em; }
+.folio { position: absolute; left: 0; right: 0; bottom: 24px; margin: 0; text-align: center; font: 1rem var(--f-titre); color: var(--encre-pale); }
+.titre-page { margin: 0 0 14px; font: 400 clamp(1.6rem, 3vw, 2.15rem)/1.15 var(--f-titre); color: var(--rubrique); text-wrap: balance; }
+.titre-page:focus { outline: none; }
+.page p { max-width: 60ch; margin: 0 0 14px; }
+.lettrine::first-letter { font-family: var(--f-gothique); float: left; font-size: 3.9em; line-height: .8; padding: .08em .1em 0 0; color: var(--rubrique); }
+.note-marge { font: italic 1rem var(--f-plume); color: var(--encre-pale); }
+
+.sommaire { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 6px; }
+.sommaire button {
+  width: 100%; display: flex; align-items: baseline; gap: 6px; padding: 8px 2px; cursor: pointer;
+  background: none; border: 0; color: var(--encre); font: 1.25rem var(--f-plume); text-align: left;
+}
+.sommaire .points { flex: 1; border-bottom: 2px dotted var(--encre-pale); transform: translateY(-5px); min-width: 20px; }
+.sommaire .num { font-family: var(--f-titre); font-variant-numeric: tabular-nums; }
+.sommaire button:hover span:first-child { color: var(--rubrique); }
+
+form { margin: 0; }
+.champ { display: grid; gap: 4px; margin-block: 16px; }
+.champ label { font: 1rem var(--f-titre); color: var(--encre-pale); }
+.champ input, .champ select {
+  font: 1.25rem var(--f-plume); color: var(--encre); background: transparent; width: 100%; box-sizing: border-box;
+  border: 0; border-bottom: 1.5px solid color-mix(in srgb, var(--encre-pale) 70%, transparent); padding: 4px 2px; border-radius: 0;
+}
+.champ select option { background: var(--page); color: var(--encre); }
+.ligne-champs { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0 18px; }
+.compteur { font: .95rem var(--f-titre); color: var(--encre-pale); font-variant-numeric: tabular-nums; justify-self: end; }
+.compteur.trop { color: var(--rubrique); }
+.erreur { margin: 8px 0 0; color: var(--rubrique); font: italic 1.05rem var(--f-plume); }
+.succes { margin: 8px 0 0; color: var(--succes); font: italic 1.05rem var(--f-plume); }
+.bouton {
+  font: 1.08rem var(--f-titre); background: var(--rubrique); color: var(--page); border: 0; cursor: pointer;
+  padding: .65em 1.4em; border-radius: 3px; box-shadow: inset 0 -2px 0 rgba(0,0,0,.25), 0 2px 0 rgba(0,0,0,.15);
+}
+.bouton:hover { filter: brightness(1.08); }
+.bouton-texte { font: 1.05rem var(--f-titre); background: none; border: 0; padding: 4px 0; color: var(--rubrique); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.actions-page { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 18px; }
+
+.vide-sceau { margin: 34px auto 18px; width: 110px; height: 110px; border-radius: 50%; border: 2px dashed color-mix(in srgb, var(--encre-pale) 60%, transparent); }
+.lettre {
+  position: relative; margin: 8px 6px 40px; padding: 26px 26px 34px; background: var(--papier-lettre); color: var(--encre);
+  border: 1px solid var(--page-bord); transform: rotate(-1.1deg); box-shadow: 0 10px 20px rgba(60,35,10,.25);
+  animation: poser .5s ease-out;
+}
+.lettre p { font-family: var(--f-plume); }
+.lien { width: 100%; box-sizing: border-box; font: 1.02rem var(--f-plume); color: var(--encre); background: color-mix(in srgb, var(--encre) 6%, transparent); border: 1px dashed var(--page-bord); padding: 8px 10px; }
+.signature { font: italic 1.1rem var(--f-plume); color: var(--encre-pale); margin-top: 14px; }
+.sceau {
+  position: absolute; right: -18px; bottom: -30px; width: 96px; height: 96px; display: grid; place-items: center;
+  border-radius: 47% 53% 50% 50% / 52% 46% 54% 48%;
+  background: radial-gradient(circle at 36% 30%, color-mix(in srgb, var(--ruban-1) 70%, #fff 30%), var(--ruban-1) 45%, color-mix(in srgb, var(--ruban-1) 60%, #000 40%));
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--ruban-1) 82%, #000), 0 6px 10px rgba(0,0,0,.35);
+  color: color-mix(in srgb, var(--ruban-1) 50%, #000); animation: tamponner .55s cubic-bezier(.3,1.4,.5,1);
+}
+.sceau svg { width: 54px; height: 54px; }
+@keyframes tamponner { 0% { transform: scale(1.9) rotate(-18deg); opacity: 0; } 65% { transform: scale(.93) rotate(3deg); opacity: 1; } 100% { transform: none; } }
+
+.tablee { list-style: none; padding: 0; margin: 12px 0 0; }
+.tablee li { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px dotted color-mix(in srgb, var(--encre-pale) 60%, transparent); }
+.tablee .role { margin-left: auto; font: italic .98rem var(--f-plume); color: var(--encre-pale); }
+.pastille {
+  flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; box-sizing: border-box;
+  background: var(--papier-lettre); border: 3px solid var(--c, var(--encre-pale)); font: 1.05rem var(--f-titre); color: var(--encre);
+}
+.nouveau { animation: ecrire 1.1s steps(18, end); }
+@keyframes ecrire { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+.caracs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin-top: 8px; }
+.carac {
+  display: grid; justify-items: center; gap: 2px; padding: 10px 6px 16px; text-align: center;
+  border: 1.5px solid color-mix(in srgb, var(--encre-pale) 75%, transparent); border-radius: 12px 12px 46% 46% / 12px 12px 28% 28%;
+}
+.carac label { font: 1rem var(--f-titre); color: var(--encre-pale); }
+.carac input {
+  width: 3.2ch; text-align: center; font: 1.7rem var(--f-titre); color: var(--encre); background: transparent;
+  border: 0; border-bottom: 1px solid color-mix(in srgb, var(--encre-pale) 50%, transparent); -moz-appearance: textfield; appearance: textfield;
+}
+.carac input::-webkit-inner-spin-button, .carac input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.carac .mod { font: italic 1.05rem var(--f-plume); color: var(--rubrique); font-variant-numeric: tabular-nums; }
+.carac.invalide { border-color: var(--rubrique); }
+
+.signets { position: absolute; left: 100%; top: 46px; display: flex; flex-direction: column; gap: 8px; }
+.signet {
+  writing-mode: vertical-rl; padding: 16px 9px; border: 0; cursor: pointer; color: var(--sur-ruban); background: var(--c);
+  font: .98rem var(--f-titre); letter-spacing: .04em; border-radius: 0 4px 4px 0; box-shadow: 3px 3px 6px rgba(0,0,0,.35);
+  transition: transform .2s;
+}
+.signet:hover { transform: translateX(4px); }
+.signet[aria-current="page"] { transform: translateX(10px); box-shadow: 5px 3px 8px rgba(0,0,0,.45); }
+
+.feuille { position: absolute; top: 14px; bottom: 14px; width: calc(50% - 14px); background: var(--page); pointer-events: none; z-index: 5; display: none; overflow: hidden; }
+.feuille.avant { display: block; left: 50%; transform-origin: left center; border-radius: 0 4px 4px 0; animation: tourner-avant .72s ease-in-out forwards; }
+.feuille.arriere { display: block; left: 14px; transform-origin: right center; border-radius: 4px 0 0 4px; animation: tourner-arriere .72s ease-in-out forwards; }
+@keyframes tourner-avant { 0% { transform: rotateY(0); filter: brightness(1); } 50% { filter: brightness(.78); } 100% { transform: rotateY(-180deg); filter: brightness(1); } }
+@keyframes tourner-arriere { 0% { transform: rotateY(0); filter: brightness(1); } 50% { filter: brightness(.78); } 100% { transform: rotateY(180deg); filter: brightness(1); } }
+
+/* ---------- En partie : carnet et carte ---------- */
+#vue-partie { display: grid; grid-template-columns: minmax(280px, 350px) minmax(0, 1fr); gap: 26px; align-items: start; padding-block: 16px; }
+.carnet {
+  position: relative; min-width: 0; box-sizing: border-box; padding: 0 22px 24px; color: var(--encre);
+  background: var(--bruit), var(--page); border-left: 14px solid var(--cuir-sombre); border-radius: 4px 6px 6px 4px;
+  box-shadow: 0 18px 36px rgba(0,0,0,.5); font: 1.05rem/1.55 var(--f-texte);
+}
+.onglets { display: flex; gap: 6px; margin-bottom: 18px; }
+.onglet {
+  border: 0; cursor: pointer; color: var(--sur-ruban); background: var(--c); font: 1rem var(--f-titre);
+  padding: 12px 12px 9px; border-radius: 0 0 4px 4px; box-shadow: 0 3px 5px rgba(0,0,0,.25); transition: padding .2s;
+}
+.onglet[aria-selected="true"] { padding-top: 20px; }
+.carnet h3 { margin: 0 0 10px; font: 400 1.45rem var(--f-titre); color: var(--rubrique); }
+.formule { display: flex; gap: 8px; align-items: end; }
+.formule .champ { flex: 1; margin-block: 0; }
+.des { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.de {
+  min-width: 44px; min-height: 40px; font: 1rem var(--f-titre); color: var(--encre); background: transparent; cursor: pointer;
+  border: 1.5px solid color-mix(in srgb, var(--encre-pale) 75%, transparent); border-radius: 6px;
+}
+.de:hover { border-color: var(--rubrique); color: var(--rubrique); }
+.journal { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 10px; max-height: 340px; overflow: auto; }
+.journal li { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 0 10px; padding-bottom: 8px; border-bottom: 1px dotted color-mix(in srgb, var(--encre-pale) 60%, transparent); }
+.journal .qui { font-family: var(--f-titre); color: var(--rubrique); }
+.journal .total { grid-row: span 2; align-self: center; font: 1.6rem var(--f-titre); font-variant-numeric: tabular-nums; }
+.journal .detail { font: italic .98rem var(--f-plume); color: var(--encre-pale); }
+.journal .critique { color: var(--succes); }
+.journal .echec { color: var(--rubrique); }
+.pv { height: 12px; border: 1px solid var(--encre-pale); border-radius: 6px; overflow: hidden; margin: 4px 0 14px; }
+.pv span { display: block; height: 100%; background: var(--rubrique); }
+.mini-caracs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; text-align: center; }
+.mini-caracs div { border: 1px solid color-mix(in srgb, var(--encre-pale) 55%, transparent); border-radius: 6px; padding: 4px; }
+.mini-caracs b { display: block; font: 400 .9rem var(--f-titre); color: var(--encre-pale); }
+
+.carte-zone { min-width: 0; }
+.outils-carte { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.outils-carte h2 { margin: 0; font: 400 1.7rem var(--f-titre); color: var(--sur-table); }
+.bascule { display: flex; gap: 6px; flex-wrap: wrap; }
+.parchemin {
+  position: relative; padding: 18px; border-radius: 4px; background: var(--bruit), var(--carte-sol); box-shadow: 0 20px 40px rgba(0,0,0,.5);
+  animation: derouler .9s cubic-bezier(.5,0,.2,1);
+}
+.parchemin::before, .parchemin::after {
+  content: ""; position: absolute; left: -10px; right: -10px; height: 18px; border-radius: 9px;
+  background: linear-gradient(180deg, var(--page-bord), var(--carte-sol) 40%, color-mix(in srgb, var(--page-bord) 70%, #000) 100%);
+  box-shadow: 0 3px 6px rgba(0,0,0,.35);
+}
+.parchemin::before { top: -9px; }
+.parchemin::after { bottom: -9px; }
+@keyframes derouler { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+#carte { display: block; width: 100%; height: auto; cursor: pointer; touch-action: manipulation; border-radius: 2px; }
+.infos-carte { margin: 14px 0 0; font: italic 1.02rem var(--f-plume); color: var(--sur-table); opacity: .9; }
+.message-carte { min-height: 1.6em; margin: 6px 0 0; font: 1.1rem var(--f-plume); color: var(--sur-table); }
+
+@media (max-width: 820px) {
+  .livre { width: 100%; margin-right: 0; margin-top: 50px; grid-template-columns: minmax(0,1fr); padding: 10px; }
+  .page { min-height: 0; padding: 30px 22px 62px; }
+  .page-gauche { border-radius: 4px 4px 0 0; box-shadow: none; border-bottom: 1px solid var(--page-bord); }
+  .page-droite { border-radius: 0 0 4px 4px; box-shadow: none; }
+  .signets { left: 10px; right: 10px; top: -44px; flex-direction: row; overflow-x: auto; gap: 6px; }
+  .signet { writing-mode: horizontal-tb; padding: 9px 12px; border-radius: 4px 4px 0 0; white-space: nowrap; }
+  .signet:hover, .signet[aria-current="page"] { transform: translateY(-4px); }
+  #vue-partie { grid-template-columns: minmax(0,1fr); }
+  .carte-zone { order: -1; }
+  .caracs { gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="bougie" aria-hidden="true"></div>
+<div class="scene">
+  <header class="barre">
+    <p>Maquette cliquable du VTT : toutes les données sont des exemples.</p>
+    <div class="actions">
+      <button class="bouton-bois" id="theme" type="button">Mode nuit</button>
+      <button class="bouton-bois" id="fermer" type="button" hidden>Fermer le grimoire</button>
+    </div>
+  </header>
+
+  <main class="vue" id="vue-couverture">
+    <div class="livre-ferme" id="livre-ferme">
+      <div class="dessous" aria-hidden="true">Ici commence la partie</div>
+      <div class="couverture">
+        <svg class="embleme" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" aria-hidden="true">
+          <polygon points="50,4 90,27 90,73 50,96 10,73 10,27"/>
+          <polygon points="50,24 74,64 26,64"/>
+          <path d="M50 4 50 24 M90 27 74 64 M90 73 74 64 M50 96 74 64 M50 96 26 64 M10 73 26 64 M10 27 26 64 M10 27 50 24 M90 27 50 24"/>
+          <text x="50" y="56" text-anchor="middle" font-size="15" fill="currentColor" stroke="none" font-family="IM Fell English SC, Georgia, serif">20</text>
+        </svg>
+        <h1 class="titre-couverture">Grimoire des Tables</h1>
+        <p class="sous-titre">Table de jeu virtuelle</p>
+        <button class="ouvrir" id="ouvrir" type="button">Ouvrir le grimoire</button>
+      </div>
+      <div class="fermoir" aria-hidden="true"></div>
+    </div>
+  </main>
+
+  <main class="vue" id="vue-livre" hidden>
+    <div class="livre">
+      <section class="page page-gauche" id="page-gauche" aria-live="polite"></section>
+      <section class="page page-droite" id="page-droite"></section>
+      <div class="feuille" id="feuille" aria-hidden="true"></div>
+      <nav class="signets" aria-label="Chapitres du grimoire" id="signets"></nav>
+    </div>
+  </main>
+
+  <main class="vue" id="vue-partie" hidden>
+    <aside class="carnet" aria-label="Carnet de partie">
+      <div class="onglets" role="tablist" aria-label="Carnet">
+        <button class="onglet" role="tab" id="tab-des" aria-controls="panneau-des" aria-selected="true" style="--c: var(--ruban-1)">Dés</button>
+        <button class="onglet" role="tab" id="tab-fiche" aria-controls="panneau-fiche" aria-selected="false" style="--c: var(--ruban-4)">Fiche</button>
+        <button class="onglet" role="tab" id="tab-convives" aria-controls="panneau-convives" aria-selected="false" style="--c: var(--ruban-3)">Convives</button>
+      </div>
+      <div role="tabpanel" id="panneau-des" aria-labelledby="tab-des">
+        <h3>Lancer les dés</h3>
+        <form id="form-des" class="formule" novalidate>
+          <div class="champ">
+            <label for="formule">Formule</label>
+            <input id="formule" value="1d20+3" autocomplete="off" spellcheck="false">
+          </div>
+          <button class="bouton" type="submit">Lancer</button>
+        </form>
+        <div class="des" id="des"></div>
+        <p class="erreur" id="erreur-des" role="alert" hidden></p>
+        <ol class="journal" id="journal" aria-label="Journal de la table" aria-live="polite"></ol>
+      </div>
+      <div role="tabpanel" id="panneau-fiche" aria-labelledby="tab-fiche" hidden></div>
+      <div role="tabpanel" id="panneau-convives" aria-labelledby="tab-convives" hidden></div>
+    </aside>
+
+    <section class="carte-zone" aria-label="Carte de la partie">
+      <div class="outils-carte">
+        <h2 id="nom-carte">La crypte</h2>
+        <div class="bascule">
+          <button class="bouton-bois" type="button" id="vue-joueur" aria-pressed="true">Vue d'Arya</button>
+          <button class="bouton-bois" type="button" id="vue-meneur" aria-pressed="false">Vue du meneur</button>
+          <button class="bouton-bois" type="button" id="retour-livre">Revenir au grimoire</button>
+        </div>
+      </div>
+      <div class="parchemin">
+        <canvas id="carte" tabindex="0" aria-label="Carte en grille de la crypte. Flèches du clavier pour déplacer le pion." aria-describedby="message-carte"></canvas>
+      </div>
+      <p class="infos-carte" id="infos-carte"></p>
+      <p class="message-carte" id="message-carte" aria-live="polite"></p>
+    </section>
+  </main>
+</div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const mouvementReduit = matchMedia('(prefers-reduced-motion: reduce)');
+  const ecranEtroit = matchMedia('(max-width: 820px)');
+  const systemeSombre = matchMedia('(prefers-color-scheme: dark)');
+  const echapper = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const NOM_MAX = 60;
+  const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const hasard = () => crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32;
+
+  const etat = {
+    table: { nom: 'La crypte', code: 'K7QM-2XRF-9LPA', creee: false },
+    rejoint: false,
+    convives: [
+      { nom: 'Morgane', role: 'Meneuse', c: '--ruban-5' },
+      { nom: 'Borin', role: 'Joueur', c: '--pion-2' },
+      { nom: 'Lyra', role: 'Joueuse', c: '--pion-3' }
+    ],
+    fiche: { nom: "Arya Vent-d'Ouest", classe: 'Roublard', niveau: 3, pv: 21, pvMax: 24, car: { FOR: 10, DEX: 17, CON: 13, INT: 12, SAG: 14, CHA: 11 } },
+    journal: [
+      { qui: 'Morgane', formule: '2d6', des: [3, 6], bonus: 0, faces: 6 },
+      { qui: 'Borin', formule: '1d20+5', des: [12], bonus: 5, faces: 20 }
+    ]
+  };
+  const lien = () => `https://vtt.vercel.app/t/${etat.table.code}`;
+  const modificateur = v => { const m = Math.floor((v - 10) / 2); return (m >= 0 ? '+' : '') + m; };
+  const CLASSES = ['Barbare', 'Barde', 'Clerc', 'Druide', 'Ensorceleur', 'Guerrier', 'Magicien', 'Moine', 'Occultiste', 'Paladin', 'Rôdeur', 'Roublard'];
+
+  /* ---------- Thème ---------- */
+  const racine = document.documentElement;
+  const themeActuel = () => racine.dataset.theme || (systemeSombre.matches ? 'dark' : 'light');
+  const majBoutonTheme = () => { $('#theme').textContent = themeActuel() === 'dark' ? 'Mode bougie' : 'Mode nuit'; };
+  $('#theme').addEventListener('click', () => { racine.dataset.theme = themeActuel() === 'dark' ? 'light' : 'dark'; majBoutonTheme(); carte.redessiner(); });
+  systemeSombre.addEventListener('change', () => { majBoutonTheme(); carte.redessiner(); });
+  majBoutonTheme();
+
+  /* ---------- Vues ---------- */
+  function montrerVue(id) {
+    document.querySelectorAll('.vue').forEach(v => { v.hidden = v.id !== id; });
+    $('#fermer').hidden = id === 'vue-couverture';
+    if (id === 'vue-partie') carte.demarrer(); else carte.arreter();
+  }
+  $('#ouvrir').addEventListener('click', () => {
+    const livre = $('#livre-ferme');
+    const suite = () => { livre.classList.remove('ouvre'); montrerVue('vue-livre'); afficher('sommaire'); $('#page-gauche .titre-page')?.focus(); };
+    if (mouvementReduit.matches) return suite();
+    livre.classList.add('ouvre');
+    setTimeout(suite, 1050);
+  });
+  $('#fermer').addEventListener('click', () => { montrerVue('vue-couverture'); $('#ouvrir').focus(); });
+
+  /* ---------- Les chapitres (doubles pages) ---------- */
+  const SIGNETS = [
+    { cle: 'sommaire', nom: 'Sommaire', c: '--ruban-2' },
+    { cle: 'creer', nom: 'Créer', c: '--ruban-1' },
+    { cle: 'rejoindre', nom: 'Rejoindre', c: '--ruban-3' },
+    { cle: 'fiche', nom: 'Fiche', c: '--ruban-4' },
+    { cle: 'partie', nom: 'Partie', c: '--ruban-5' }
+  ];
+  const ORDRE = SIGNETS.map(s => s.cle);
+  let chapitre = null;
+
+  const pages = {
+    sommaire: {
+      folios: [1, 2],
+      gauche: () => `
+        <p class="tete">Grimoire des tables</p>
+        <h2 class="titre-page" tabindex="-1">Bienvenue, voyageur</h2>
+        <p class="lettrine">Ce grimoire réunit votre groupe autour d'une même table, chacun depuis son navigateur. Le meneur ouvre une table et envoie un lien ; les joueurs le suivent, apportent leur personnage, et la partie commence.</p>
+        <p>Tournez les pages avec les signets, ou choisissez un chapitre dans le sommaire.</p>
+        <p class="note-marge">Dans cette maquette, rien n'est enregistré : chaque écran montre le parcours d'un lot.</p>`,
+      droite: () => `
+        <p class="tete">Sommaire</p>
+        <h2 class="titre-page">Table des matières</h2>
+        <ol class="sommaire">
+          ${[['creer', 'Créer une table', 3], ['rejoindre', 'Rejoindre une table', 5], ['fiche', 'Fiche de personnage', 7], ['partie', 'Entrer en partie', 9]]
+            .map(([c, t, n]) => `<li><button type="button" data-aller="${c}"><span>${t}</span><span class="points" aria-hidden="true"></span><span class="num">${n}</span></button></li>`).join('')}
+        </ol>`
+    },
+    creer: {
+      folios: [3, 4],
+      gauche: () => `
+        <p class="tete">Chapitre premier</p>
+        <h2 class="titre-page" tabindex="-1">Créer une table</h2>
+        <p class="lettrine">Nommez votre table : c'est le nom que vos joueurs liront sur l'invitation. Vous en deviendrez le meneur.</p>
+        <form id="form-table" novalidate>
+          <div class="champ">
+            <label for="nom-table">Nom de la table</label>
+            <input id="nom-table" value="${echapper(etat.table.nom)}" autocomplete="off" aria-describedby="compteur-nom erreur-table">
+            <span class="compteur" id="compteur-nom"></span>
+          </div>
+          <p class="erreur" id="erreur-table" role="alert" hidden></p>
+          <div class="actions-page"><button class="bouton" type="submit">Créer la table</button></div>
+        </form>
+        <p class="note-marge">Essayez un nom vide, ou de plus de 60 caractères, pour voir le refus.</p>`,
+      droite: () => etat.table.creee ? `
+        <p class="tete">La table</p>
+        <h2 class="titre-page">L'invitation</h2>
+        <div class="lettre">
+          <p>À qui recevra ce lien,</p>
+          <p>vous êtes convié à la table « ${echapper(etat.table.nom)} ». Suivez ce lien pour prendre place :</p>
+          <label class="note-marge" for="lien-invitation">Lien d'invitation</label>
+          <input class="lien" id="lien-invitation" readonly value="${lien()}">
+          <div class="actions-page"><button class="bouton" type="button" id="copier">Copier le lien</button></div>
+          <p class="succes" id="statut-copie" role="status"></p>
+          <p class="signature">Le meneur de la table</p>
+          <div class="sceau" aria-hidden="true">${EMBLEME}</div>
+        </div>
+        <button class="bouton-texte" type="button" data-aller="rejoindre">Voir comment un joueur rejoint la table</button>` : `
+        <p class="tete">La table</p>
+        <h2 class="titre-page">L'invitation</h2>
+        <div class="vide-sceau" aria-hidden="true"></div>
+        <p class="note-marge" style="text-align:center">Une fois la table créée, sa lettre d'invitation apparaîtra ici, scellée à la cire.</p>`,
+      lier() {
+        const champ = $('#nom-table'), compteur = $('#compteur-nom'), erreur = $('#erreur-table');
+        const compter = () => { const n = champ.value.trim().length; compteur.textContent = `${n} / ${NOM_MAX}`; compteur.classList.toggle('trop', n > NOM_MAX); };
+        champ.addEventListener('input', compter); compter();
+        $('#form-table').addEventListener('submit', e => {
+          e.preventDefault();
+          const nom = champ.value.trim();
+          const probleme = !nom ? 'La table n’a pas été créée : donnez-lui un nom.' : nom.length > NOM_MAX ? `La table n’a pas été créée : le nom fait ${nom.length} caractères, 60 au plus.` : '';
+          erreur.hidden = !probleme; erreur.textContent = probleme;
+          champ.setAttribute('aria-invalid', probleme ? 'true' : 'false');
+          if (probleme) return champ.focus();
+          etat.table = { nom, creee: true, code: Array.from({ length: 3 }, () => Array.from({ length: 4 }, () => ALPHABET[Math.floor(hasard() * ALPHABET.length)]).join('')).join('-') };
+          $('#page-droite').innerHTML = pages.creer.droite() + folio(4);
+          lierCommun($('#page-droite'));
+          lierCopie();
+        });
+        lierCopie();
+      }
+    },
+    rejoindre: {
+      folios: [5, 6],
+      gauche: () => `
+        <p class="tete">Chapitre deuxième</p>
+        <h2 class="titre-page" tabindex="-1">Rejoindre une table</h2>
+        <p class="lettrine">Collez le lien reçu du meneur, puis choisissez le nom sous lequel les autres vous verront.</p>
+        <form id="form-rejoindre" novalidate>
+          <div class="champ"><label for="lien-recu">Lien reçu</label><input id="lien-recu" value="${lien()}" autocomplete="off" spellcheck="false"></div>
+          <div class="champ"><label for="pseudo">Votre pseudo</label><input id="pseudo" value="Arya" autocomplete="nickname"></div>
+          <p class="erreur" id="erreur-rejoindre" role="alert" hidden></p>
+          <div class="actions-page"><button class="bouton" type="submit">Rejoindre la table</button></div>
+        </form>
+        <p class="note-marge">Modifiez le lien pour voir le message d'une table introuvable.</p>`,
+      droite: () => `
+        <p class="tete">Les convives</p>
+        <h2 class="titre-page">Autour de « ${echapper(etat.table.nom)} »</h2>
+        <ul class="tablee" id="tablee">${etat.convives.map(p => ligneConvive(p)).join('')}</ul>
+        <p class="note-marge">La liste se met à jour d'elle-même quand quelqu'un arrive, sans recharger la page.</p>`,
+      lier() {
+        $('#form-rejoindre').addEventListener('submit', e => {
+          e.preventDefault();
+          const code = ($('#lien-recu').value.trim().match(/\/t\/([A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4})\/?$/i) || [])[1];
+          const pseudo = $('#pseudo').value.trim();
+          const erreur = $('#erreur-rejoindre');
+          const probleme = !code || code.toUpperCase() !== etat.table.code ? 'Cette table n’existe pas. Vérifiez le lien envoyé par le meneur.' : !pseudo ? 'Choisissez un pseudo pour prendre place.' : etat.rejoint ? 'Vous êtes déjà assis à cette table.' : '';
+          erreur.hidden = !probleme; erreur.textContent = probleme;
+          if (probleme) return;
+          etat.rejoint = true;
+          ajouterConvive({ nom: pseudo, role: 'Vous', c: '--pion-1' });
+          setTimeout(() => ajouterConvive({ nom: 'Thoren', role: 'Vient d’arriver', c: '--ruban-3' }), 2600);
+        });
+      }
+    },
+    fiche: {
+      folios: [7, 8],
+      gauche: () => { const f = etat.fiche; return `
+        <p class="tete">Chapitre troisième</p>
+        <h2 class="titre-page" tabindex="-1">Fiche de personnage</h2>
+        <p class="lettrine">Une fiche simple, à la manière de Donjons et Dragons. Vous pourrez la modifier en pleine partie.</p>
+        <div class="champ"><label for="f-nom">Nom du personnage</label><input id="f-nom" form="form-fiche" value="${echapper(f.nom)}"></div>
+        <div class="ligne-champs">
+          <div class="champ"><label for="f-classe">Classe</label><select id="f-classe" form="form-fiche">${CLASSES.map(c => `<option${c === f.classe ? ' selected' : ''}>${c}</option>`).join('')}</select></div>
+          <div class="champ"><label for="f-niveau">Niveau</label><input id="f-niveau" form="form-fiche" type="number" min="1" max="20" value="${f.niveau}"></div>
+        </div>
+        <div class="ligne-champs">
+          <div class="champ"><label for="f-pv">Points de vie</label><input id="f-pv" form="form-fiche" type="number" value="${f.pv}"></div>
+          <div class="champ"><label for="f-pvmax">Maximum</label><input id="f-pvmax" form="form-fiche" type="number" min="1" value="${f.pvMax}"></div>
+        </div>`; },
+      droite: () => `
+        <p class="tete">Le personnage</p>
+        <h2 class="titre-page">Caractéristiques</h2>
+        <form id="form-fiche" novalidate>
+          <div class="caracs">${Object.entries(etat.fiche.car).map(([k, v]) => `
+            <div class="carac"><label for="c-${k}">${k}</label><input id="c-${k}" type="number" min="1" max="30" value="${v}" data-car="${k}"><span class="mod" id="m-${k}">${modificateur(v)}</span></div>`).join('')}
+          </div>
+          <p class="erreur" id="erreur-fiche" role="alert" hidden></p>
+          <p class="succes" id="statut-fiche" role="status"></p>
+          <div class="actions-page"><button class="bouton" type="submit">Inscrire la fiche</button></div>
+        </form>
+        <p class="note-marge">Chaque valeur va de 1 à 30 ; le modificateur se calcule tout seul.</p>`,
+      lier() {
+        document.querySelectorAll('[data-car]').forEach(inp => inp.addEventListener('input', () => {
+          const v = Number(inp.value), ok = Number.isInteger(v) && v >= 1 && v <= 30;
+          $(`#m-${inp.dataset.car}`).textContent = ok ? modificateur(v) : '?';
+          inp.closest('.carac').classList.toggle('invalide', !ok);
+        }));
+        $('#form-fiche').addEventListener('submit', e => {
+          e.preventDefault();
+          const car = {}; let horsBorne = null;
+          document.querySelectorAll('[data-car]').forEach(inp => { const v = Number(inp.value); car[inp.dataset.car] = v; if (!horsBorne && !(Number.isInteger(v) && v >= 1 && v <= 30)) horsBorne = inp.dataset.car; });
+          const nom = $('#f-nom').value.trim(), niveau = Number($('#f-niveau').value), pv = Number($('#f-pv').value), pvMax = Number($('#f-pvmax').value);
+          const probleme = !nom ? 'Donnez un nom à votre personnage.'
+            : horsBorne ? `La fiche est refusée : ${horsBorne} doit être entre 1 et 30.`
+            : !(Number.isInteger(niveau) && niveau >= 1 && niveau <= 20) ? 'La fiche est refusée : le niveau va de 1 à 20.'
+            : !Number.isInteger(pv) || pv < 0 ? 'La fiche est refusée : les points de vie ne peuvent pas être négatifs.'
+            : !(Number.isInteger(pvMax) && pvMax >= 1) || pv > pvMax ? 'La fiche est refusée : les points de vie dépassent le maximum.' : '';
+          $('#erreur-fiche').hidden = !probleme; $('#erreur-fiche').textContent = probleme;
+          $('#statut-fiche').textContent = probleme ? '' : 'Fiche inscrite. Elle vous suivra en partie.';
+          if (!probleme) etat.fiche = { nom, classe: $('#f-classe').value, niveau, pv, pvMax, car };
+        });
+      }
+    },
+    partie: {
+      folios: [9, 10],
+      gauche: () => `
+        <p class="tete">Chapitre quatrième</p>
+        <h2 class="titre-page" tabindex="-1">Entrer en partie</h2>
+        <p class="lettrine">En partie, le grimoire devient votre carnet : dés, fiche et convives restent à portée de main, pendant que la carte se déroule sur la table.</p>
+        <p>Vous voyez ce qu'éclaire la torche d'Arya, à trois cases autour d'elle. Ce qu'elle a déjà vu reste esquissé ; le reste demeure dans l'ombre.</p>`,
+      droite: () => `
+        <p class="tete">La carte</p>
+        <h2 class="titre-page">${echapper(etat.table.nom)}</h2>
+        <p>Le meneur voit la carte entière et peut déplacer tous les pions. Chaque joueur ne déplace que le sien.</p>
+        <div class="actions-page"><button class="bouton" type="button" id="derouler">Dérouler la carte</button></div>`,
+      lier() { $('#derouler').addEventListener('click', entrerEnPartie); }
+    }
+  };
+
+  function lierCopie() {
+    const bouton = $('#copier'); if (!bouton) return;
+    bouton.addEventListener('click', () => {
+      const champ = $('#lien-invitation'), statut = $('#statut-copie');
+      const repli = () => { champ.select(); statut.textContent = 'Copie bloquée par le navigateur : le lien est sélectionné, faites Ctrl+C.'; };
+      try { navigator.clipboard.writeText(champ.value).then(() => { statut.textContent = 'Lien copié.'; }, repli); } catch { repli(); }
+    });
+  }
+  const ligneConvive = (p, neuf = false) => `<li${neuf ? ' class="nouveau"' : ''}><span class="pastille" style="--c: var(${p.c})">${echapper(p.nom[0].toUpperCase())}</span><span>${echapper(p.nom)}</span><span class="role">${p.role}</span></li>`;
+  function ajouterConvive(p) {
+    etat.convives.push(p);
+    const liste = $('#tablee'); if (liste) liste.insertAdjacentHTML('beforeend', ligneConvive(p, true));
+    majConvives();
+  }
+  const folio = n => `<p class="folio" aria-hidden="true">${n}</p>`;
+  function lierCommun(racinePage) {
+    racinePage.querySelectorAll('[data-aller]').forEach(b => b.addEventListener('click', () => allerA(b.dataset.aller)));
+  }
+
+  function remplir(cote, cle) {
+    const p = pages[cle], el = $(cote === 'g' ? '#page-gauche' : '#page-droite');
+    el.innerHTML = (cote === 'g' ? p.gauche() : p.droite()) + folio(p.folios[cote === 'g' ? 0 : 1]);
+  }
+  function finaliser(cle) {
+    lierCommun($('#page-gauche')); lierCommun($('#page-droite'));
+    pages[cle].lier?.();
+    document.querySelectorAll('.signet').forEach(s => s.removeAttribute('aria-current'));
+    document.querySelector(`.signet[data-cle="${cle}"]`)?.setAttribute('aria-current', 'page');
+  }
+  function afficher(cle) { chapitre = cle; remplir('g', cle); remplir('d', cle); finaliser(cle); }
+
+  function allerA(cle) {
+    if (cle === chapitre) return;
+    const avant = ORDRE.indexOf(cle) > ORDRE.indexOf(chapitre);
+    if (mouvementReduit.matches || ecranEtroit.matches) { afficher(cle); $('#page-gauche .titre-page')?.focus(); return; }
+    const feuille = $('#feuille');
+    chapitre = cle;
+    remplir(avant ? 'd' : 'g', cle);
+    feuille.className = 'feuille ' + (avant ? 'avant' : 'arriere');
+    setTimeout(() => {
+      remplir(avant ? 'g' : 'd', cle);
+      feuille.className = 'feuille';
+      finaliser(cle);
+      $('#page-gauche .titre-page')?.focus();
+    }, 720);
+  }
+
+  $('#signets').innerHTML = SIGNETS.map(s => `<button class="signet" type="button" data-cle="${s.cle}" style="--c: var(${s.c})">${s.nom}</button>`).join('');
+  $('#signets').addEventListener('click', e => { const b = e.target.closest('.signet'); if (b) allerA(b.dataset.cle); });
+
+  /* ---------- Carnet de partie ---------- */
+  const onglets = [...document.querySelectorAll('.onglet')];
+  onglets.forEach(o => o.addEventListener('click', () => {
+    onglets.forEach(x => { const actif = x === o; x.setAttribute('aria-selected', actif); $('#' + x.getAttribute('aria-controls')).hidden = !actif; });
+  }));
+  $('#des').innerHTML = [4, 6, 8, 10, 12, 20].map(f => `<button class="de" type="button" data-faces="${f}" aria-label="Lancer 1d${f}">d${f}</button>`).join('');
+  $('#des').addEventListener('click', e => { const b = e.target.closest('.de'); if (b) lancer(`1d${b.dataset.faces}`); });
+  $('#form-des').addEventListener('submit', e => { e.preventDefault(); lancer($('#formule').value); });
+
+  function analyser(formule) {
+    const s = formule.replace(/\s+/g, '').toLowerCase();
+    if (!s) return { erreur: 'Écrivez une formule, par exemple 1d20+3.' };
+    const m = s.match(/^(\d*)d(\d+)([+-]\d+)?$/);
+    if (!m) return { erreur: /[+-]$/.test(s) ? 'La formule finit par un signe sans nombre : ajoutez le bonus, par exemple 2d6+3.' : 'Formule non reconnue. Écrivez par exemple 2d6+3 ou 1d20.' };
+    const n = m[1] === '' ? 1 : Number(m[1]), faces = Number(m[2]), bonus = m[3] ? Number(m[3]) : 0;
+    if (n < 1) return { erreur: `Il faut lancer au moins un dé : ${s} ne lance rien.` };
+    if (n > 100) return { erreur: 'Pas plus de 100 dés à la fois.' };
+    if (faces < 2) return { erreur: `Un dé a au moins 2 faces : d${faces} n'existe pas.` };
+    if (faces > 1000) return { erreur: 'Un dé a au plus 1000 faces.' };
+    return { n, faces, bonus, texte: s };
+  }
+  function lancer(formule) {
+    const f = analyser(formule), erreur = $('#erreur-des');
+    erreur.hidden = !f.erreur; erreur.textContent = f.erreur || '';
+    if (f.erreur) return;
+    const des = Array.from({ length: f.n }, () => 1 + Math.floor(hasard() * f.faces));
+    etat.journal.push({ qui: 'Arya', formule: f.texte, des, bonus: f.bonus, faces: f.faces, neuf: true });
+    afficherJournal();
+  }
+  function afficherJournal() {
+    $('#journal').innerHTML = etat.journal.slice().reverse().map(j => {
+      const somme = j.des.reduce((a, b) => a + b, 0) + j.bonus;
+      const d20 = j.faces === 20 && j.des.length === 1;
+      const note = d20 && j.des[0] === 20 ? '<span class="critique"> Réussite critique !</span>' : d20 && j.des[0] === 1 ? '<span class="echec"> Échec critique.</span>' : '';
+      const detail = j.des.join(' + ') + (j.bonus ? `, bonus ${j.bonus > 0 ? '+' : ''}${j.bonus}` : '');
+      const li = `<li${j.neuf ? ' class="nouveau"' : ''}><span><span class="qui">${echapper(j.qui)}</span> lance ${echapper(j.formule)}${note}</span><span class="total">${somme}</span><span class="detail">${detail}</span></li>`;
+      j.neuf = false; return li;
+    }).join('');
+  }
+  function majFiche() {
+    const f = etat.fiche;
+    $('#panneau-fiche').innerHTML = `
+      <h3>${echapper(f.nom)}</h3>
+      <p>${echapper(f.classe)}, niveau ${f.niveau}</p>
+      <p style="margin:0">Points de vie : ${f.pv} / ${f.pvMax}</p>
+      <div class="pv" role="img" aria-label="${f.pv} points de vie sur ${f.pvMax}"><span style="width:${Math.round(100 * f.pv / f.pvMax)}%"></span></div>
+      <div class="mini-caracs">${Object.entries(f.car).map(([k, v]) => `<div><b>${k}</b>${v} (${modificateur(v)})</div>`).join('')}</div>
+      <div class="actions-page"><button class="bouton-texte" type="button" id="modifier-fiche">Modifier dans le grimoire</button></div>`;
+    $('#modifier-fiche').addEventListener('click', () => { montrerVue('vue-livre'); afficher('fiche'); $('#page-gauche .titre-page')?.focus(); });
+  }
+  function majConvives() {
+    $('#panneau-convives').innerHTML = `<h3>Autour de la table</h3><ul class="tablee">${etat.convives.map(p => ligneConvive(p)).join('')}</ul>`;
+  }
+
+  function entrerEnPartie() {
+    if (!etat.rejoint) { etat.rejoint = true; etat.convives.push({ nom: 'Arya', role: 'Vous', c: '--pion-1' }); }
+    $('#nom-carte').textContent = etat.table.nom;
+    majFiche(); majConvives(); afficherJournal();
+    montrerVue('vue-partie');
+    $('#carte').focus({ preventScroll: true });
+  }
+  $('#retour-livre').addEventListener('click', () => { montrerVue('vue-livre'); afficher('partie'); });
+
+  /* ---------- Carte, brouillard et lumière ---------- */
+  const EMBLEME_SVG = '<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"><polygon points="50,6 88,28 88,72 50,94 12,72 12,28"/><polygon points="50,26 72,64 28,64"/></svg>';
+  var EMBLEME = EMBLEME_SVG;
+
+  const carte = (() => {
+    const PLAN = [
+      '##################',
+      '#.....#....#.....#',
+      '#.....#....#.TTT.#',
+      '#.....+....+.....#',
+      '#.....#....#.....#',
+      '###+###....###+###',
+      '#................#',
+      '#...o........o...#',
+      '#................#',
+      '#######.##.#######',
+      '######......######',
+      '##################'
+    ];
+    const COLS = 18, LIGNES = 12, VISION = 3, VITESSE = 6;
+    const pions = [
+      { id: 'arya', nom: 'Arya', x: 2, y: 7, c: '--pion-1', joueur: true },
+      { id: 'borin', nom: 'Borin', x: 9, y: 7, c: '--pion-2' },
+      { id: 'lyra', nom: 'Lyra', x: 15, y: 3, c: '--pion-3' },
+      { id: 'goule', nom: 'Goule', x: 8, y: 10, c: '--pion-monstre', monstre: true }
+    ];
+    const arya = pions[0];
+    const explore = new Set();
+    let canvas, ctx, T = 30, meneur = false, selection = null, survol = null, boucle = null, actif = false, gouleVue = false;
+
+    const caseEn = (x, y) => (PLAN[y] && PLAN[y][x]) || '#';
+    const marchable = (x, y) => '.+'.includes(caseEn(x, y));
+    const dist = (a, b) => Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y));
+    const visible = (x, y) => dist({ x, y }, arya) <= VISION;
+    const nomCase = (x, y) => String.fromCharCode(65 + x) + (y + 1);
+    const pionEn = (x, y) => pions.find(p => p.x === x && p.y === y);
+    const voit = p => meneur || p.joueur || visible(p.x, p.y);
+    const message = t => { $('#message-carte').textContent = t; };
+
+    function majVision() {
+      for (let y = arya.y - VISION; y <= arya.y + VISION; y++)
+        for (let x = arya.x - VISION; x <= arya.x + VISION; x++)
+          if (x >= 0 && y >= 0 && x < COLS && y < LIGNES) explore.add(y * COLS + x);
+      const goule = pions[3];
+      if (!meneur && !gouleVue && visible(goule.x, goule.y)) { gouleVue = true; message(`Une goule surgit de l'ombre en ${nomCase(goule.x, goule.y)} !`); }
+    }
+    const lire = () => { const cs = getComputedStyle(racine); return k => cs.getPropertyValue(k).trim(); };
+    const rgb = h => { h = h.replace('#', ''); if (h.length === 3) h = [...h].map(c => c + c).join(''); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+    const rgba = (h, a) => `rgba(${rgb(h).join(',')},${a})`;
+
+    function dessiner(t = 0) {
+      if (!ctx) return;
+      const c = lire(), sol = c('--carte-sol'), mur = c('--carte-mur'), encre = c('--encre');
+      const W = COLS * T, H = LIGNES * T;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = sol; ctx.fillRect(0, 0, W, H);
+      for (let y = 0; y < LIGNES; y++) for (let x = 0; x < COLS; x++) {
+        const k = caseEn(x, y), px = x * T, py = y * T;
+        if (k === '#') {
+          ctx.fillStyle = mur; ctx.fillRect(px, py, T, T);
+          ctx.strokeStyle = rgba(sol, .18); ctx.lineWidth = 1; ctx.beginPath();
+          for (let i = 1; i < 4; i++) { ctx.moveTo(px + i * T / 4, py); ctx.lineTo(px, py + i * T / 4); }
+          ctx.stroke(); continue;
+        }
+        ctx.strokeStyle = rgba(encre, .16); ctx.lineWidth = 1; ctx.strokeRect(px + .5, py + .5, T - 1, T - 1);
+        if (k === '+') { ctx.fillStyle = rgba(encre, .55); const v = caseEn(x, y - 1) === '#'; v ? ctx.fillRect(px + T * .15, py + T * .4, T * .7, T * .2) : ctx.fillRect(px + T * .4, py + T * .15, T * .2, T * .7); }
+        if (k === 'o') { ctx.fillStyle = mur; ctx.beginPath(); ctx.arc(px + T / 2, py + T / 2, T * .34, 0, 7); ctx.fill(); }
+        if (k === 'T') { ctx.strokeStyle = rgba(encre, .7); ctx.lineWidth = 1.5; ctx.strokeRect(px + T * .2, py + T * .12, T * .6, T * .76); ctx.beginPath(); ctx.moveTo(px + T / 2, py + T * .25); ctx.lineTo(px + T / 2, py + T * .7); ctx.moveTo(px + T * .33, py + T * .4); ctx.lineTo(px + T * .67, py + T * .4); ctx.stroke(); }
+      }
+      if (survol && marchable(survol.x, survol.y)) {
+        const atteint = meneur ? !!selection : dist(survol, arya) <= VITESSE;
+        if (atteint) { ctx.strokeStyle = c('--rubrique'); ctx.lineWidth = 2; ctx.setLineDash([4, 3]); ctx.strokeRect(survol.x * T + 2, survol.y * T + 2, T - 4, T - 4); ctx.setLineDash([]); }
+      }
+      pions.filter(voit).forEach(p => {
+        const cx = p.x * T + T / 2, cy = p.y * T + T / 2;
+        ctx.fillStyle = c('--papier-lettre'); ctx.strokeStyle = c(p.c); ctx.lineWidth = Math.max(2, T * .09);
+        ctx.beginPath(); ctx.arc(cx, cy, T * .37, 0, 7); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = c('--encre'); ctx.font = `${Math.round(T * .44)}px "IM Fell English SC", Georgia, serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(p.nom[0], cx, cy + 1);
+        if (selection === p.id) { ctx.strokeStyle = c('--rubrique'); ctx.lineWidth = 2; ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.arc(cx, cy, T * .48, 0, 7); ctx.stroke(); ctx.setLineDash([]); }
+      });
+      if (meneur) {
+        ctx.strokeStyle = c('--rubrique'); ctx.lineWidth = 1.5; ctx.setLineDash([6, 4]);
+        ctx.strokeRect((arya.x - VISION) * T, (arya.y - VISION) * T, (2 * VISION + 1) * T, (2 * VISION + 1) * T); ctx.setLineDash([]);
+        return;
+      }
+      const petit = document.createElement('canvas'); petit.width = COLS; petit.height = LIGNES;
+      const pc = petit.getContext('2d'), img = pc.createImageData(COLS, LIGNES), [r, g, b] = rgb(c('--brouillard'));
+      for (let y = 0; y < LIGNES; y++) for (let x = 0; x < COLS; x++) {
+        const i = (y * COLS + x) * 4; img.data[i] = r; img.data[i + 1] = g; img.data[i + 2] = b;
+        img.data[i + 3] = visible(x, y) ? 0 : explore.has(y * COLS + x) ? 150 : 255;
+      }
+      pc.putImageData(img, 0, 0);
+      ctx.imageSmoothingEnabled = true; ctx.drawImage(petit, 0, 0, W, H);
+      const vacille = mouvementReduit.matches ? 1 : 1 + .03 * Math.sin(t / 170) + .02 * Math.sin(t / 53);
+      const cx = arya.x * T + T / 2, cy = arya.y * T + T / 2, rayon = (VISION + .6) * T * vacille;
+      const ombre = ctx.createRadialGradient(cx, cy, rayon * .45, cx, cy, rayon);
+      ombre.addColorStop(0, 'rgba(0,0,0,0)'); ombre.addColorStop(1, rgba(c('--brouillard'), .35));
+      ctx.fillStyle = ombre; ctx.fillRect(0, 0, W, H);
+      const torche = ctx.createRadialGradient(cx, cy, 0, cx, cy, rayon);
+      torche.addColorStop(0, 'rgba(255,184,96,.30)'); torche.addColorStop(.55, 'rgba(255,160,80,.10)'); torche.addColorStop(1, 'rgba(255,160,80,0)');
+      ctx.fillStyle = torche; ctx.beginPath(); ctx.arc(cx, cy, rayon, 0, 7); ctx.fill();
+    }
+
+    function dimensionner() {
+      if (!canvas || !canvas.clientWidth) return;
+      const dpr = window.devicePixelRatio || 1;
+      T = canvas.clientWidth / COLS;
+      canvas.width = Math.round(COLS * T * dpr); canvas.height = Math.round(LIGNES * T * dpr);
+      canvas.style.height = `${LIGNES * T}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      dessiner(performance.now());
+    }
+    function infos() {
+      $('#infos-carte').textContent = meneur
+        ? 'Vue du meneur : toute la carte, tous les pions. Cliquez un pion puis une case pour le déplacer. Le cadre pointillé montre ce que voit Arya.'
+        : 'Vision 3 cases, vitesse 6 cases (9 m). Cliquez une case pour déplacer Arya, ou utilisez les flèches du clavier.';
+    }
+    function deplacer(p, x, y) {
+      p.x = x; p.y = y;
+      if (p === arya) majVision();
+      dessiner(performance.now());
+    }
+    function cliquer(x, y) {
+      const p = pionEn(x, y);
+      if (meneur) {
+        if (p) { selection = p.id; message(`Pion de ${p.nom} sélectionné : cliquez une case pour le déplacer.`); return dessiner(performance.now()); }
+        if (!selection) return message('Cliquez d’abord un pion.');
+        if (!marchable(x, y)) return message('Un mur occupe cette case.');
+        const choisi = pions.find(q => q.id === selection);
+        deplacer(choisi, x, y); return message(`${choisi.nom} est placé en ${nomCase(x, y)}.`);
+      }
+      if (p && p !== arya && voit(p)) return message(`Le pion de ${p.nom} appartient à un autre joueur : seul le meneur peut le déplacer.`);
+      if (p === arya) return message('Cliquez une case libre pour déplacer Arya.');
+      if (p) return message('Quelque chose bloque le passage dans l’ombre…');
+      if (!marchable(x, y)) return message('Arya ne peut pas aller là : un mur bloque la case.');
+      if (dist({ x, y }, arya) > VITESSE) return message('Trop loin : Arya se déplace de 6 cases au plus par tour.');
+      deplacer(arya, x, y);
+      if (!gouleVue || !visible(pions[3].x, pions[3].y)) message(`Arya avance en ${nomCase(x, y)}.`);
+    }
+    const caseSous = e => { const r = canvas.getBoundingClientRect(); return { x: Math.floor((e.clientX - r.left) / T), y: Math.floor((e.clientY - r.top) / T) }; };
+
+    function init() {
+      canvas = $('#carte'); ctx = canvas.getContext('2d');
+      majVision(); infos();
+      new ResizeObserver(dimensionner).observe(canvas.parentElement);
+      canvas.addEventListener('click', e => { const { x, y } = caseSous(e); cliquer(x, y); });
+      canvas.addEventListener('pointermove', e => { survol = caseSous(e); if (!boucle) dessiner(performance.now()); });
+      canvas.addEventListener('pointerleave', () => { survol = null; if (!boucle) dessiner(performance.now()); });
+      canvas.addEventListener('keydown', e => {
+        const pas = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] }[e.key];
+        if (!pas) return;
+        e.preventDefault();
+        const p = meneur ? pions.find(q => q.id === selection) || arya : arya;
+        const x = p.x + pas[0], y = p.y + pas[1];
+        if (!marchable(x, y) || pionEn(x, y)) return message('Le passage est bloqué.');
+        const surprise = gouleVue; deplacer(p, x, y); if (gouleVue === surprise) message(`${p.nom} avance en ${nomCase(x, y)}.`);
+      });
+      const bascule = m => {
+        meneur = m; selection = null;
+        $('#vue-joueur').setAttribute('aria-pressed', !m); $('#vue-meneur').setAttribute('aria-pressed', m);
+        infos(); message(m ? 'Vous voyez la carte comme le meneur.' : 'Retour à la vue d’Arya.');
+        arreter(); demarrer();
+      };
+      $('#vue-joueur').addEventListener('click', () => bascule(false));
+      $('#vue-meneur').addEventListener('click', () => bascule(true));
+    }
+    function demarrer() {
+      if (!canvas) init();
+      actif = true; dimensionner();
+      if (!mouvementReduit.matches && !meneur && !boucle) {
+        const tour = t => { if (!actif) { boucle = null; return; } dessiner(t); boucle = requestAnimationFrame(tour); };
+        boucle = requestAnimationFrame(tour);
+      }
+    }
+    function arreter() { actif = false; if (boucle) cancelAnimationFrame(boucle); boucle = null; }
+    return { demarrer, arreter, redessiner: () => { if (ctx) dessiner(performance.now()); } };
+  })();
+})();
+</script>
+</body>
+</html>
