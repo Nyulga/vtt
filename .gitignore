@@ -1,0 +1,18 @@
+# Réglages et notes personnels de Claude Code
+CLAUDE.local.md
+.claude/settings.local.json
+.claude/worktrees/
+
+# Secrets : seules les valeurs d'exemple sont suivies
+.env
+.env.*
+!.env.example
+
+# Bases locales et sauvegardes
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+
+# Guide d'installation fourni par la formation : reste en local
+LISEZMOI.md
