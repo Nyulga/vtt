@@ -16,3 +16,6 @@ CLAUDE.local.md
 
 # Guide d'installation fourni par la formation : reste en local
 LISEZMOI.md
+
+# Captures et journaux du MCP Playwright
+.playwright-mcp/
