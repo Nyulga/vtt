@@ -29,7 +29,9 @@ Pour un meneur de jeu et ses joueurs, chacun depuis son navigateur.
 
 - On ne code aucun écran sans le design system.
 - Le travail est découpé en lots dans `lots.md`. Un lot se traite avec le skill `lot` (`/lot N`) : tests d'intégration écrits et vus rouges d'abord, puis le code.
-- Travail en parallèle : un worktree par lot indépendant, créé par l'agent `worktree-manager` dans `.claude/worktrees/`.
+- Travail en parallèle : un worktree par lot indépendant, créé par le skill `/worktree` dans `.claude/worktrees/`.
+- Vérification de chaque lot par quatre agents en parallèle : `revue`, `conformite`, `securite`, `non-regression`.
 - Idées, bugs et constats hors lot : une issue GitHub, via le skill ou l'agent `backlog`.
 - Messages de commit au format du skill `git-conventional`.
-- Ne commite et ne pousse jamais sans que je le demande.
+- Ne commite et ne pousse jamais sans que je le demande. Exception : `/lot N` vaut accord pour commiter et pousser à chaque étape, sur `dev` uniquement.
+- `main` ne reçoit que des PR `dev` → `main`, vérifiées, ouvertes avec mon accord et fusionnées par moi.

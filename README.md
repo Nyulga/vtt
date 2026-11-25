@@ -50,9 +50,11 @@ claude mcp add --scope user --transport http context7 https://mcp.context7.com/m
 
 ## Travailler en équipe
 
-- **Branches** : on travaille sur `dev`. `main` ne reçoit que des PR `dev` → `main`, fusionnées par le responsable du projet.
-- **Lots** : chaque lot de `lots.md` a son issue GitHub (label `lot`) et se traite avec le skill `/lot N` : tests d'intégration écrits et vus rouges d'abord, puis le code, couche par couche.
-- **En parallèle** : un worktree par lot indépendant, dans `.claude/worktrees/`.
+- **Branches** : on travaille sur `dev`. `main` ne reçoit que des PR `dev` → `main`, vérifiées puis fusionnées par le responsable du projet ; jamais de commit direct sur `main`.
+- **Lots** : chaque lot de `lots.md` a son issue GitHub (label `lot`) et se traite avec le skill `/lot N`. La session principale coordonne : tests d'intégration écrits et vus rouges d'abord, puis une étape par couche (service, données, assemblage, présentation) confiée à son agent codeur, avec un commit sur `dev` à chaque étape et un journal dans `docs/plan/journal/`.
+- **Vérification** : à la fin de chaque lot, quatre agents relisent en parallèle : `revue` (critères, correction, tests), `conformite` (règles, design system, commentaires), `securite` et `non-regression`.
+- **En parallèle** : un worktree par lot indépendant, créé et rangé avec le skill `/worktree`, dans `.claude/worktrees/`.
+- **Garde-fous** : un hook bloque les commandes dangereuses (push sur `main` ou forcé, `rm -rf`, lecture des `.env`, fusion de PR) et un autre lance le lint après chaque modification.
 - **Idées et bugs hors lot** : une issue GitHub, jamais du code « en passant ».
 - **Commits** : format [Conventional Commits](https://www.conventionalcommits.org/fr/) (skill `git-conventional`), par exemple `feat(lot-1): créer une table et obtenir son lien`.
 - **Secrets** : uniquement dans `.env.local`, jamais dans un fichier suivi par Git.
