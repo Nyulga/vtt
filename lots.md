@@ -68,3 +68,18 @@ Avant le lot 1 : le design system est posé. On ne code aucun écran sans lui.
 - [ ] Étant donné le pion d'un autre joueur, quand il essaie de le déplacer, alors c'est refusé ; le meneur peut déplacer tous les pions.
 
 **Statut** : à faire
+
+## Lot 6 · Brouillard de guerre et vision des pions (bonus)
+
+**Parcours** : sur la carte, chaque joueur ne voit que ce que son pion éclaire autour de lui. En avançant, il découvre la carte ; les zones déjà vues restent grisées. Le meneur voit tout.
+
+**Dépend de** : lot 5.
+
+**Hors périmètre** : les murs et obstacles qui bloquent la vue, les sources de lumière posées sur la carte. Limite acceptée : le brouillard est calculé dans le navigateur, un joueur averti pourrait voir la carte entière.
+
+**Critères d'acceptation**
+- [ ] Étant donné un pion avec une vision de 3 cases (une diagonale compte pour une case), quand son joueur ouvre la carte, alors les cases à 3 cases ou moins du pion sont visibles et les cases jamais vues sont noires.
+- [ ] Étant donné un pion qui se déplace, quand il s'éloigne d'une zone, alors les cases déjà vues restent grisées et les cases nouvellement dans sa vision deviennent visibles.
+- [ ] Étant donné le meneur, quand il ouvre la carte, alors il voit toute la carte et tous les pions, sans brouillard.
+
+**Statut** : à faire
