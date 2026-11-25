@@ -7,7 +7,8 @@ Cette règle s'applique à **tout** le code du projet, à chaque tâche. Elle co
 1. Relire `intent.md`, puis le lot en cours.
 2. Relire cette règle et la règle de **chaque couche** que la tâche va toucher.
 3. Vérifier que la branche courante est `dev`.
-4. Si une demande contredit une règle, **s'arrêter et le signaler**. Ne jamais contourner une règle en silence.
+4. Avant d'utiliser l'API d'une librairie (Next.js, React, Supabase, Vitest…), consulter sa documentation à jour avec le MCP Context7 (`resolve-library-id` puis `query-docs`) plutôt que de se fier à sa mémoire : les API changent d'une version à l'autre.
+5. Si une demande contredit une règle, **s'arrêter et le signaler**. Ne jamais contourner une règle en silence.
 
 ## 2. SOLID : l'esprit, pas une architecture
 

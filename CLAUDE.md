@@ -12,6 +12,13 @@ Pour un meneur de jeu et ses joueurs, chacun depuis son navigateur.
 - Build : `pnpm build`
 - Vérification complète (lint, types, tests) : `pnpm verifier`. Elle existera dès l'installation de Next.js.
 
+## Outils MCP
+
+- `supabase` et `playwright` sont déclarés dans `.mcp.json` : ils arrivent avec le dépôt.
+- `context7` (documentation à jour des librairies, règle 00 §1) s'installe une fois par développeur, hors du dépôt, pour que chacun garde sa propre clé :
+  `claude mcp add --scope user --transport http context7 https://mcp.context7.com/mcp`
+  Une clé personnelle (gratuite, sur context7.com) relève la limite d'usage ; elle ne va jamais dans un fichier suivi par Git.
+
 ## Architecture
 
 - Trois couches : présentation, service, données (ADR 002). Les règles de chaque couche sont dans `.claude/rules/`, avec `00-principes.md` qui s'applique partout.

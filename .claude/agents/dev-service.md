@@ -1,7 +1,7 @@
 ---
 name: dev-service
 description: Code en TDD la couche service (règles du jeu, validation, contrats) d'un lot de VTT. Lancé par le skill lot (session principale), pour une étape précise.
-tools: Read, Write, Edit, Grep, Glob, Bash
+tools: Read, Write, Edit, Grep, Glob, Bash, mcp__context7__resolve-library-id, mcp__context7__query-docs
 model: sonnet
 effort: high
 ---
