@@ -1,10 +1,10 @@
 # Règle 00 · Principes communs (toujours applicable)
 
-Cette règle s'applique à **tout** le code du projet, à chaque tâche. Elle complète `intent.md`, qui reste la source de vérité. Les règles de chaque couche (`.claude/rules/01-…` et suivantes) précisent ce qu'elle impose.
+Cette règle s'applique à **tout** le code du projet, à chaque tâche. Elle complète `INTENT.md`, qui reste la source de vérité. Les règles de chaque couche (`.claude/rules/01-…` et suivantes) précisent ce qu'elle impose.
 
 ## 1. Avant de coder
 
-1. Relire `intent.md`, puis le lot en cours.
+1. Relire `INTENT.md`, puis le lot en cours.
 2. Relire cette règle et la règle de **chaque couche** que la tâche va toucher.
 3. Vérifier que la branche courante est `dev`.
 4. Avant d'utiliser l'API d'une librairie (Next.js, React, Supabase, Vitest…), consulter sa documentation à jour avec le MCP Context7 (`resolve-library-id` puis `query-docs`) plutôt que de se fier à sa mémoire : les API changent d'une version à l'autre.
@@ -58,7 +58,7 @@ En plus :
 
 ## 4. Nommage
 
-- Le langage métier est celui d'`intent.md` (français), partout dans le code.
+- Le langage métier est celui d'`INTENT.md` (français), partout dans le code.
 - Les identifiants n'ont pas d'accents. Les termes techniques des patterns restent en anglais (`Repository`, `Adapter`).
 - Un nom dit **ce que fait** la chose, jamais comment elle est faite.
 
@@ -66,7 +66,7 @@ En plus :
 
 - Chaque fichier commence par une courte description de son rôle.
 - Chaque classe ou composant public, et chaque règle métier, explique sa responsabilité et sa **raison d'être**.
-- Chaque choix non évident est justifié, avec un renvoi vers l'ADR ou la section d'`intent.md` concernée.
+- Chaque choix non évident est justifié, avec un renvoi vers l'ADR ou la section d'`INTENT.md` concernée.
 - Interdit : paraphraser le code, le style télégraphique, le franglais inutile, les commentaires périmés.
 
 ## 6. TDD

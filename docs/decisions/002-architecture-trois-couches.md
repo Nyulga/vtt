@@ -5,7 +5,7 @@
 - Scope: framing
 
 ## Context
-`intent.md` impose au minimum trois couches. L'app est petite (tables, invitations, fiches, dés, pions),
+`INTENT.md` impose au minimum trois couches. L'app est petite (tables, invitations, fiches, dés, pions),
 doit être livrée en quatre jours, et plusieurs agents vont coder en parallèle : les frontières
 entre couches doivent être simples à respecter et à vérifier.
 

@@ -16,7 +16,7 @@ Tu te concentres sur ce qui **fonctionne ou ne fonctionne pas**. La sécurité e
 
 ## Démarche
 1. Récupère le diff et le log de la plage, ou de la PR.
-2. Lis `intent.md`, le lot, son journal s'il existe, `CLAUDE.md` et `.claude/rules/00-principes.md`.
+2. Lis `INTENT.md`, le lot, son journal s'il existe, `CLAUDE.md` et `.claude/rules/00-principes.md`.
 3. Vérifie :
    - **Critères** : chaque critère du lot est couvert par le code **et** par au moins un test qui le prouve réellement. Un test qui ne vérifie rien d'observable, ou qui répète l'implémentation, ne compte pas.
    - **Correction** : bugs, erreurs mal gérées, cas limites (formule de dés invalide (« 0d6 », « d0 », « 2d6+ »), fiche incomplète, lien d'invitation inconnu, deux joueurs qui déplacent le même pion, liste vide, identifiant inconnu, accents, dates et fuseau, deux actions concurrentes).
@@ -47,7 +47,7 @@ Une erreur qui disparaît sans bruit coûte des heures plus tard. Repère dans l
 - un bloc `catch` (ou `except`) **vide**, ou qui se contente de journaliser puis continue comme si de rien n'était ;
 - un `catch` trop large, qui attraperait aussi des erreurs sans rapport : liste lesquelles ;
 - une valeur par défaut (`null`, liste vide, `0`) renvoyée sur erreur, sans trace et sans prévenir l'utilisateur ;
-- un repli (« si ça échoue, on fait autre chose ») que ni `intent.md` ni le lot ne demandent ;
+- un repli (« si ça échoue, on fait autre chose ») que ni `INTENT.md` ni le lot ne demandent ;
 - un accès conditionnel (`?.`, `??`) qui saute en silence une opération qui aurait dû réussir ;
 - une nouvelle tentative qui s'épuise sans le dire ;
 - une implémentation factice (fake, bouchon) utilisée hors des tests ;

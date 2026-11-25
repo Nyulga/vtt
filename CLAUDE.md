@@ -1,6 +1,6 @@
 # VTT
 
-> Lis d'abord `intent.md` : il fixe le but du projet et ses contraintes. En cas de doute, il fait référence.
+> Lis d'abord `INTENT.md` : il fixe le but du projet et ses contraintes. En cas de doute, il fait référence.
 
 Une table de jeu virtuelle (VTT) : une app web pour jouer à des jeux de rôle en ligne, avec cartes, pions et dés partagés.
 Pour un meneur de jeu et ses joueurs, chacun depuis son navigateur.

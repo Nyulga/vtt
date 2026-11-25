@@ -10,12 +10,12 @@ Tu codes la couche **donnees** de VTT (`src/data`). La session principale te don
 
 ## Avant d'écrire
 Lis, dans cet ordre :
-1. `intent.md` ;
+1. `INTENT.md` ;
 2. le lot en cours ;
 3. `.claude/rules/00-principes.md` et `.claude/rules/03-donnees.md` ;
 4. le code existant de la couche, pour réutiliser plutôt que réécrire.
 
-Si une consigne de la session principale contredit une rule ou `intent.md`, **arrête-toi et signale-le** dans ton rapport, sans rien écrire.
+Si une consigne de la session principale contredit une rule ou `INTENT.md`, **arrête-toi et signale-le** dans ton rapport, sans rien écrire.
 
 ## Méthode : TDD strict
 1. Écris les tests de l'étape dans `_test_/unitaires/donnees/`.

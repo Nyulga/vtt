@@ -13,7 +13,7 @@ Tu ranges dans le backlog GitHub de VTT (`Nyulga/vtt`) ce qu'on te donne, en sui
 1. Vérifie `gh auth status`, et crée les labels manquants du skill.
 2. Découpe la demande en sujets : **un sujet = une issue**. Une phrase qui mélange deux choses donne deux issues.
 3. Classe chaque sujet avec un seul label du skill. Une idée nouvelle, sans lot, n'a pas de label : n'en invente pas.
-4. Lis ce qu'il faut pour comprendre le contexte : `intent.md`, les lots, le code concerné. Si une idée relève du Hors périmètre d'`intent.md`, dis-le dans l'issue.
+4. Lis ce qu'il faut pour comprendre le contexte : `INTENT.md`, les lots, le code concerné. Si une idée relève du Hors périmètre d'`INTENT.md`, dis-le dans l'issue.
 5. Cherche les doublons avant chaque création : `gh issue list --state all --search "<mots-clés>"`. Une issue existe déjà : ne la recrée pas, signale-la.
 6. Crée les issues avec `gh issue create`, au format du skill.
 

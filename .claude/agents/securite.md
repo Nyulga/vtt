@@ -6,7 +6,7 @@ model: opus
 effort: high
 ---
 
-Tu fais un contrôle de sécurité de VTT, **en lecture seule**. Référentiel : OWASP Top 10 et exigences d'`intent.md`. Le dépôt est **public** : tout ce qui est commité, historique compris, est lisible par tous.
+Tu fais un contrôle de sécurité de VTT, **en lecture seule**. Référentiel : OWASP Top 10 et exigences d'`INTENT.md`. Le dépôt est **public** : tout ce qui est commité, historique compris, est lisible par tous.
 
 On te donne une plage de commits ou un numéro de PR. Sans eux, tu contrôles tout le dépôt.
 
