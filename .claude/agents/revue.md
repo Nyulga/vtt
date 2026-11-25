@@ -76,7 +76,8 @@ Pour **chaque fichier modifié**, lis la rule dont l'en-tête `paths` le couvre 
 | `00-principes` | Chaque test vu rouge pour la bonne raison. Une responsabilité par fichier, pas de God file. Aucune désactivation de règle. Le code devenu inutile est supprimé. Les commentaires disent encore vrai. |
 | `01-presentation` | Aucun import de `src/data` ni de `@supabase/*` dans `src/app` ou `src/components`. Aucune règle du jeu dans un composant (calcul de dés, validation de fiche) : elle vit dans un service. Composants du design system, sans couleur en dur. |
 | `02-service` | Les services ne dépendent que de contrats (interfaces), jamais de `src/data` ni de Supabase. Le hasard et l'horloge arrivent en paramètre : aucun `Math.random(` ni `Date.now(` dans `src/services`. Chaque règle métier a son test. |
-| `03-donnees` | Seule couche qui importe `@supabase/*`. Chaque nouvelle table a sa politique RLS dans la même migration. Aucune migration déjà fusionnée n'est modifiée. |
+| `03-donnees` | Seule couche qui importe `@supabase/*`. Chaque nouvelle table a sa politique RLS dans la même migration. Chaque autorisation d'un critère est aussi dans la RLS, avec un test de refus. Aucune migration déjà fusionnée n'est modifiée. |
+| `04-composition` | L'assemblage ne fait que brancher services et données : aucune règle du jeu, aucune validation, aucune clé `service_role`. |
 
 ## Rapport
 Constats du plus grave au moins grave. Pour chacun :
