@@ -16,4 +16,4 @@ En ligne, déployée depuis GitHub. Vercel par défaut, ou un serveur Ubuntu per
 
 - Architecture en trois couches au minimum : présentation, service, données.
 - Une base SQL seulement si elle est utile.
-- Une première version utilisable pour le dimanche 29 novembre 2026 : on reste basique.
+- Une première version utilisable d'abord, simple, puis on enrichit lot par lot.
